@@ -1,12 +1,12 @@
 import pandas as pd
 
-#exec(open("project_2.py").read())
+#exec(open("source.py").read())
 mlb = pd.read_csv('mlb_elo.csv')
 teams = sorted(list(mlb[mlb.season == 2019].team1.unique()))
 
 home_games = mlb.groupby('team1').team1.count().filter(items =teams)
 away_games = mlb.groupby('team2').team2.count().filter(items =teams)
-################################# RRUUNNNN DIIFFFFFFF####################################
+################################# Run Dif####################################
 def calc_rundiff():
     home_scores  = mlb.groupby('team1').score1.sum().filter(items = teams)
     away_scores = mlb.groupby('team2').score2.sum().filter(items = teams)
@@ -15,14 +15,14 @@ def calc_rundiff():
     away_scores_allowed = mlb.groupby('team2').score1.sum().filter(items = teams)
     return((home_scores_allowed + away_scores_allowed)/(home_games + away_games))
     
-    ######################################PROBABILITIESSS ###################################
+    ######################################Probabilities ###################################
 
 def calc_prob(): #This calculates the average prob of each team
     home_psum = mlb.groupby('team1').elo_prob1.sum().filter(items = teams)
     away_psum = mlb.groupby('team2').elo_prob2.sum().filter(items = teams)
     return((home_psum + away_psum)/(home_games + away_games))
 
-    ######################################### PLAYYYYYOFFFFFSS ##################################################
+    ######################################### Playoffs ##################################################
 def calc_playoff():
     mlb = pd.read_csv('mlb_elo.csv')
     mlb_playoff = mlb[mlb.playoff.notna()]
@@ -36,7 +36,7 @@ def calc_playoff():
     winner= playoff_wins_by_season.groupby('team1').team1.size()
     return winner
 
-    ##################### WORLLDD SEEERRIES ###########################
+    ##################### World Series ###########################
 def calc_worldseries(): 
     mlb = pd.read_csv('mlb_elo.csv')
     mlb_series = mlb[mlb.playoff.notna()]
@@ -54,7 +54,7 @@ def calc_worldseries():
     #series_wins_by_season.to_csv(r'wins.csv')
     wins = series_wins_by_season.groupby('team1').team1.size()
     return wins
-######################## CALCULATE index MY DATAFRAME!!! ###############################################
+######################## CALCULATE index MY DATAFRAME ###############################################
 def everything():
     dicti = {'team':teams,
             'games_played': home_games + away_games, 
@@ -73,7 +73,7 @@ def everything_with_ranks(a_df):
             'raw_rank': calc_rank(a_df) }
     df = pd.DataFrame(dicti).set_index('team')
     return df   
-    ######################################## RANNNNKKKKKKKKK ###############################################
+    ######################################## Rank ###############################################
 def calc_rank(total_df):
     for column in total_df.columns:
         rank_column = column + '_rank'
@@ -82,7 +82,7 @@ def calc_rank(total_df):
     my_rank = total_df[rank_columns]
     ranks = my_rank.sum(axis = 1)
     return(ranks)
-######################### MAIN FUNCTION IN PROGRAM! #######################################################
+######################### MAIN FUNCTION IN PROGRAM #######################################################
 my_df = everything()
 #displays what we need
 dictin = {'team': teams,
